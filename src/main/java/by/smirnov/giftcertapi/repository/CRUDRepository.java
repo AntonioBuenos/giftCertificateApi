@@ -5,10 +5,9 @@ import java.util.Optional;
 
 public interface CRUDRepository <K, T>{
 
-    T findById(K id);
-    Optional<T> findOne(K id);
+    Optional<T> findById(K id);
     List<T> findAll();
     T create(T object);
     T update(T object);
-    K delete(K id);
+    void delete(K id);
 }
