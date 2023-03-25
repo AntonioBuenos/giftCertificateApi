@@ -12,5 +12,7 @@ public interface ControllerConstants {
 
     String TAGS = "tags";
 
+    String CERTIFICATES = "giftCertificates";
+
     String DELETED = "Object by this ID successfully deleted";
 }
