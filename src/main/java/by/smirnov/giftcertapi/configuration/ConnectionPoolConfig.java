@@ -1,10 +1,12 @@
 package by.smirnov.giftcertapi.configuration;
 
 import com.zaxxer.hikari.HikariDataSource;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -13,18 +15,14 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import javax.sql.DataSource;
 
 @Configuration
-@EnableWebMvc
-public class ConnectionPoolConfig implements WebMvcConfigurer {
+@Import({DatabaseProperties.class})
+@RequiredArgsConstructor
+public class ConnectionPoolConfig {
 
-    private final ApplicationContext applicationContext;
-
-    @Autowired
-    public ConnectionPoolConfig(ApplicationContext applicationContext) {
-        this.applicationContext = applicationContext;
-    }
+    private final DatabaseProperties databaseConfig;
 
     @Bean
-    public DataSource hikariDatasource(DatabaseProperties databaseConfig) {
+    public DataSource hikariDatasource() {
         HikariDataSource hikariDataSource = new HikariDataSource();
 
         hikariDataSource.setJdbcUrl(databaseConfig.getUrl());

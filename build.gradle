@@ -2,6 +2,12 @@ plugins {
     id 'java'
 }
 
+apply plugin: 'java'
+
+repositories {
+    jcenter()
+}
+
 group 'by.smirnov'
 version '1.0-SNAPSHOT'
 
@@ -10,16 +16,19 @@ repositories {
 }
 
 dependencies {
+    implementation 'org.apache.tomcat.embed:tomcat-embed-jasper:8.0.47'
     implementation 'org.springframework:spring-core:5.3.26'
     implementation 'org.springframework:spring-context:5.3.26'
     implementation 'org.springframework:spring-web:5.3.26'
     implementation 'org.springframework:spring-webmvc:5.3.26'
     implementation 'org.springframework:spring-jdbc:5.3.26'
+    compileOnly 'javax.servlet:javax.servlet-api:4.0.1'
     implementation 'javax.validation:validation-api:2.0.1.Final'
     implementation 'org.hibernate.validator:hibernate-validator:8.0.0.Final'
     implementation 'org.postgresql:postgresql:42.6.0'
     implementation 'com.zaxxer:HikariCP:5.0.1'
     compileOnly 'org.projectlombok:lombok:1.18.26'
+    annotationProcessor 'org.projectlombok:lombok:1.18.26'
     implementation 'org.mapstruct:mapstruct:1.5.3.Final'
     annotationProcessor "org.mapstruct:mapstruct-processor:1.5.3.Final"
     testAnnotationProcessor "org.mapstruct:mapstruct-processor:1.5.3.Final"
@@ -31,3 +40,5 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+
+apply plugin: 'war'
