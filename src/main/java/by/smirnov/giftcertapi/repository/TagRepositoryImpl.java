@@ -1,6 +1,5 @@
 package by.smirnov.giftcertapi.repository;
 
-import by.smirnov.giftcertapi.domain.GiftCertificate;
 import by.smirnov.giftcertapi.domain.Tag;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Session;
@@ -55,6 +54,6 @@ public class TagRepositoryImpl implements TagRepository {
     @Override
     public void delete(Long id) {
         Session session = sessionFactory.getCurrentSession();
-        session.remove(session.get(GiftCertificate.class, id));
+        session.remove(session.get(Tag.class, id));
     }
 }
