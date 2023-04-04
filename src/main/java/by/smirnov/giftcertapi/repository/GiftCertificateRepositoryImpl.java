@@ -2,66 +2,64 @@ package by.smirnov.giftcertapi.repository;
 
 import by.smirnov.giftcertapi.domain.GiftCertificate;
 import lombok.RequiredArgsConstructor;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
 public class GiftCertificateRepositoryImpl implements GiftCertificateRepository {
-    private final JdbcTemplate jdbcTemplate;
-    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-    private final GiftCertificateRowMapper giftCertificateMapper;
 
+    private final SessionFactory sessionFactory;
+
+    @Transactional(readOnly = true)
     @Override
     public Optional<GiftCertificate> findById(Long id) {
-        return Optional.ofNullable(jdbcTemplate.queryForObject("select * from certificates.gift_certificate where id = " + id, giftCertificateMapper));
+        Session session = sessionFactory.getCurrentSession();
+        return Optional.ofNullable(session.get(GiftCertificate.class, id));
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<GiftCertificate> findAll() {
-        return jdbcTemplate.query("select * from certificates.gift_certificate order by id", giftCertificateMapper);
+        Session session = sessionFactory.getCurrentSession();
+
+        return session.createQuery(
+                "select p from GiftCertificate p order by p.id", GiftCertificate.class
+        ).getResultList();
     }
 
+    @Transactional
     @Override
     public GiftCertificate create(GiftCertificate object) {
-        final String insertQuery =
-                "insert into certificates.gift_certificate (name, description, price, duration, create_date) " +
-                        "values (:name, :description, :price, :duration, now());";
-
-        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
-        mapSqlParameterSource.addValue("name", object.getName());
-        mapSqlParameterSource.addValue("description", object.getDescription());
-        mapSqlParameterSource.addValue("price", object.getPrice());
-        mapSqlParameterSource.addValue("duration", object.getDuration());
-
-        namedParameterJdbcTemplate.update(insertQuery, mapSqlParameterSource);
-
-        Long lastInsertId = namedParameterJdbcTemplate.query("select currval('certificates.gift_certificate_id_seq') as last_id",
-                resultSet -> {
-                    resultSet.next();
-                    return resultSet.getLong("last_id");
-                });
-
-        return findById(lastInsertId).orElse(null);
+        Session session = sessionFactory.getCurrentSession();
+        session.persist(object);
+        return session.get(GiftCertificate.class, object.getId());
     }
 
+    @Transactional
     @Override
     public GiftCertificate update(GiftCertificate object) {
-        Long id = object.getId();
-        jdbcTemplate.update(
-                "update certificates.gift_certificate " +
-                        "set name=?, description=?, price=?, duration=?, last_update_date=now() where id=?",
-                object.getName(), object.getDescription(), object.getPrice(), object.getDuration(), id);
-        return findById(id).orElse(null);
+        Session session = sessionFactory.getCurrentSession();
+        GiftCertificate objectToBeUpdated = session.get(GiftCertificate.class, object.getId());
+        objectToBeUpdated.setLastUpdateDate(Timestamp.valueOf(LocalDateTime.now()));
+        objectToBeUpdated.setName(object.getName());
+        objectToBeUpdated.setDescription(object.getDescription());
+        objectToBeUpdated.setPrice(object.getPrice());
+        objectToBeUpdated.setDuration(object.getDuration());
+
+        return objectToBeUpdated;
     }
 
     @Override
     public void delete(Long id) {
-        jdbcTemplate.update("delete from certificates.gift_certificate where id=?", id);
+        Session session = sessionFactory.getCurrentSession();
+        session.remove(session.get(GiftCertificate.class, id));
     }
 }
