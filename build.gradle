@@ -4,10 +4,6 @@ plugins {
 
 apply plugin: 'java'
 
-repositories {
-    jcenter()
-}
-
 group 'by.smirnov'
 version '1.0-SNAPSHOT'
 
@@ -35,10 +31,12 @@ dependencies {
     implementation 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    implementation 'org.hibernate.orm:hibernate-core:6.2.0.Final'
+    implementation 'org.springframework:spring-orm:5.3.26'
+    implementation 'org.hibernate.validator:hibernate-validator:6.2.5.Final'
 }
 
 test {
     useJUnitPlatform()
 }
 
-apply plugin: 'war'

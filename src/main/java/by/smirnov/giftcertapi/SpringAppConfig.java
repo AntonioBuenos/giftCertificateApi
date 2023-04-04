@@ -1,4 +1,4 @@
-package by.smirnov.giftcertapi.configuration;
+package by.smirnov.giftcertapi;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;

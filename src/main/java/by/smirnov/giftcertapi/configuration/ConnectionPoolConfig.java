@@ -2,17 +2,20 @@ package by.smirnov.giftcertapi.configuration;
 
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
+import org.hibernate.SessionFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.core.env.Environment;
+import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
+import java.io.IOException;
+import java.util.Properties;
 
 @Configuration
 @Import({DatabaseProperties.class})
@@ -20,6 +23,7 @@ import javax.sql.DataSource;
 public class ConnectionPoolConfig {
 
     private final DatabaseProperties databaseConfig;
+    private final Environment env;
 
     @Bean
     public DataSource hikariDatasource() {
@@ -35,12 +39,24 @@ public class ConnectionPoolConfig {
     }
 
     @Bean
-    public JdbcTemplate jdbcTemplate(DataSource dataSource) {
-        return new JdbcTemplate(dataSource);
+    public SessionFactory getSessionFactory(DataSource dataSource) throws IOException {
+
+        LocalSessionFactoryBean factoryBean = new LocalSessionFactoryBean();
+
+        factoryBean.setPackagesToScan("by.smirnov.giftcertapi.domain");
+        factoryBean.setDataSource(dataSource);
+        factoryBean.setHibernateProperties(getAdditionalProperties());
+        factoryBean.afterPropertiesSet();
+
+        return factoryBean.getObject();
     }
 
-    @Bean
-    public NamedParameterJdbcTemplate namedParameterJdbcTemplate(DataSource dataSource) {
-        return new NamedParameterJdbcTemplate(dataSource);
+    private Properties getAdditionalProperties() {
+        Properties properties = new Properties();
+
+        properties.put("hibernate.show_sql", "true");
+        properties.put("hibernate.default_schema", "sensorsdb");
+        properties.put("current_session_context_class", "org.springframework.orm.hibernate5.SpringSessionContext");
+        return properties;
     }
 }

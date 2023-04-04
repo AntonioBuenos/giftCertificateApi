@@ -1,4 +1,4 @@
-package by.smirnov.giftcertapi.configuration;
+/*package by.smirnov.giftcertapi.configuration;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -8,4 +8,4 @@ import org.springframework.context.annotation.Import;
 @Import({ConnectionPoolConfig.class, DatabaseProperties.class})
 @ComponentScan("by.smirnov.giftcertapi")
 public class ApplicationContextStarter {
-}
+}*/
