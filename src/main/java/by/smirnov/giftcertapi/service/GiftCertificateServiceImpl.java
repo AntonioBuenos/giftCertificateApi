@@ -25,16 +25,16 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 
     @Override
     public GiftCertificate create(GiftCertificate object) {
-        return repository.create(object);
+        return repository.save(object);
     }
 
     @Override
     public GiftCertificate update(GiftCertificate toBeUpdated) {
-        return repository.update(toBeUpdated);
+        return repository.save(toBeUpdated);
     }
 
     @Override
     public void delete(Long id) {
-        repository.delete(id);
+        repository.deleteById(id);
     }
 }

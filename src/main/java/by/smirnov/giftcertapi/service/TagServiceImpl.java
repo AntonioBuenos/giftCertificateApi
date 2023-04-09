@@ -25,16 +25,16 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public Tag create(Tag object) {
-        return repository.create(object);
+        return repository.save(object);
     }
 
     @Override
     public Tag update(Tag toBeUpdated) {
-        return repository.update(toBeUpdated);
+        return repository.save(toBeUpdated);
     }
 
     @Override
     public void delete(Long id) {
-        repository.delete(id);
+        repository.deleteById(id);
     }
 }
