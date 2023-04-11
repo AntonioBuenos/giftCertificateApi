@@ -1,0 +1,24 @@
+spring:
+  datasource:
+    hikari:
+      jdbc-url: "jdbc:postgresql://localhost:5432/postgres"
+      maximum-pool-size: 10
+      driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: root
+    url: "jdbc:postgresql://localhost:5432/postgres"
+  sql:
+    init:
+      mode: always
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    baseline-description: Flyway Scripts
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+    url: ${spring.datasource.url}
+    default-schema: certificates
+    out-of-order: true
+    ignore-migration-patterns: '*:ignored'
+server:
+  port: 8081

@@ -4,8 +4,6 @@ import by.smirnov.giftcertapi.domain.GiftCertificate;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-import java.time.Duration;
-
 @Mapper
 public interface GiftCertificateConverter {
 
