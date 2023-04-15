@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.util.Properties;
 
 @Configuration
-@Import({DatabaseProperties.class})
 @RequiredArgsConstructor
 public class ConnectionPoolConfig {
 
