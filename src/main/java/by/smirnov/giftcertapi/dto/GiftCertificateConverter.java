@@ -3,10 +3,8 @@ package by.smirnov.giftcertapi.dto;
 import by.smirnov.giftcertapi.domain.GiftCertificate;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.springframework.stereotype.Component;
 
-@Mapper
-@Component
+@Mapper(componentModel = "spring")
 public interface GiftCertificateConverter {
 
     @Mapping(target = "duration", expression = "java( java.time.Duration.ofDays ( request.getDuration() ) )")
