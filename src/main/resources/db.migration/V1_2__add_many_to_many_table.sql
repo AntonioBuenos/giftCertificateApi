@@ -7,7 +7,7 @@ create table certificates.l_certificate_tag
         constraint l_certificate_tag_certificate_id_fk
             references certificates.gift_certificate (id)
             on update cascade on delete cascade,
-    guitar_id bigint      not null
+    tag_id bigint      not null
         constraint l_certificate_tag_tag_id_fk
             references certificates.tag
             on update cascade on delete cascade
