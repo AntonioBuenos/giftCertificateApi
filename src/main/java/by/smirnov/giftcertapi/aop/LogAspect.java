@@ -24,4 +24,17 @@ public class LogAspect {
         log.debug("Method {} in {} finished", joinPoint.getSignature().getName(),joinPoint.getSignature().getDeclaringType());
         return proceed;
     }
+
+    @Pointcut("within(by.smirnov.giftcertapi.controller..*))")
+    public void aroundControllerPointcut() {
+        //Declares pointcut
+    }
+
+    @Around("aroundServicePointcut()")
+    public Object logAroundControllerMethods(ProceedingJoinPoint joinPoint) throws Throwable {
+        log.debug("Method {} in {} started", joinPoint.getSignature().getName(), joinPoint.getSignature().getDeclaringType());
+        Object proceed = joinPoint.proceed();
+        log.debug("Method {} in {} finished", joinPoint.getSignature().getName(),joinPoint.getSignature().getDeclaringType());
+        return proceed;
+    }
 }
