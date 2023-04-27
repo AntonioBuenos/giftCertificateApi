@@ -1,4 +1,4 @@
-create table certificates.l_certificate_tag
+create table if not exists certificates.l_certificate_tag
 (
     id        bigserial
         constraint l_certificate_tag_pk
@@ -16,5 +16,5 @@ create table certificates.l_certificate_tag
 alter table certificates.l_certificate_tag
     owner to postgres;
 
-create unique index l_certificate_tag_id_uindex
+create unique index if not exists l_certificate_tag_id_uindex
     on certificates.l_certificate_tag (id);
