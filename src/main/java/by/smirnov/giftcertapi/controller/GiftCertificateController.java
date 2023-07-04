@@ -37,7 +37,10 @@ import static by.smirnov.giftcertapi.controller.ControllerConstants.MAPPING_ID;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(MAPPING_CERTIFICATES)
-
+@Tag(
+        name = "Gift certificate controller",
+        description = "This controller is responsible for the CRUD operations with gift certificates"
+)
 public class GiftCertificateController {
 
     private final GiftCertificateService service;
