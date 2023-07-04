@@ -8,6 +8,7 @@ import by.smirnov.giftcertapi.exception.BadRequestException;
 import by.smirnov.giftcertapi.exception.NoSuchEntityException;
 import by.smirnov.giftcertapi.exception.ValidationErrorConverter;
 import by.smirnov.giftcertapi.service.GiftCertificateService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -36,6 +37,7 @@ import static by.smirnov.giftcertapi.controller.ControllerConstants.MAPPING_ID;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(MAPPING_CERTIFICATES)
+
 public class GiftCertificateController {
 
     private final GiftCertificateService service;
@@ -89,10 +91,4 @@ public class GiftCertificateController {
     }
 
     @DeleteMapping(MAPPING_ID)
-    public ResponseEntity<Map<String, Long>> delete(@PathVariable(ID) long id) {
-
-        if (Objects.isNull(service.findById(id))) throw new NoSuchEntityException();
-        service.delete(id);
-        return new ResponseEntity<>(Map.of(DELETED, id), HttpStatus.OK);
-    }
-}
+    public ResponseEntity<Map<String, Long>> delete(@PathVariable(ID) long 
