@@ -8,6 +8,11 @@ import by.smirnov.giftcertapi.exception.BadRequestException;
 import by.smirnov.giftcertapi.exception.NoSuchEntityException;
 import by.smirnov.giftcertapi.exception.ValidationErrorConverter;
 import by.smirnov.giftcertapi.service.GiftCertificateService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -47,6 +52,21 @@ public class GiftCertificateController {
 
     private final GiftCertificateConverter converter;
 
+    @Operation(
+            method = "GET",
+            summary = "Returns a list of all certificates",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Successful Request"),
+                    @ApiResponse(responseCode = "400", description = "Bad Request. ", content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    array = @ArraySchema(schema = @Schema(implementation = ErrorContainer.class)))
+                    }),
+                    @ApiResponse(responseCode = "500", description = "Unexpected Internal Server Error", content =
+                    @Content)
+            },
+            description = "This method gets list of all certificates"
+    )
     @GetMapping
     public ResponseEntity<Map<String, List<GiftCertificateResponse>>> index() {
         List<GiftCertificateResponse> responses = service.findAll()
