@@ -76,6 +76,22 @@ public class GiftCertificateController {
         return new ResponseEntity<>(Collections.singletonMap(CERTIFICATES, responses), HttpStatus.OK);
     }
 
+    @Operation(
+            method = "GET",
+            summary = "Finding a certificate by ID",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Successful Request"),
+                    @ApiResponse(responseCode = "400", description = "Bad Request. " ,
+                            content = {
+                                    @Content(
+                                            mediaType = "application/json",
+                                            array = @ArraySchema(schema = @Schema(implementation = ErrorContainer.class)))
+                            }),
+                    @ApiResponse(responseCode = "500", description = "Unexpected Internal Server Error", content =
+                    @Content)
+            },
+            description = "This method gets a certificate by id"
+    )
     @GetMapping(MAPPING_ID)
     public ResponseEntity<GiftCertificateResponse> show(@PathVariable(ID) long id) {
 
