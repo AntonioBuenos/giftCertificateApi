@@ -100,6 +100,21 @@ public class GiftCertificateController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @Operation(
+            method = "POST",
+            summary = "Creates a new certificate",
+            responses = {
+                    @ApiResponse(responseCode = "201", description = "Entity created"),
+                    @ApiResponse(responseCode = "400", description = "Bad Request. ", content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    array = @ArraySchema(schema = @Schema(implementation = ErrorContainer.class)))
+                    }),
+                    @ApiResponse(responseCode = "500", description = "Unexpected Internal Server Error", content =
+                    @Content)
+            },
+            description = "This method creates a new certificate"
+    )
     @PostMapping
     public ResponseEntity<GiftCertificateResponse> create(@RequestBody @Valid GiftCertificateRequest request,
                                               BindingResult bindingResult) {
