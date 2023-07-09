@@ -129,6 +129,21 @@ public class GiftCertificateController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
+    @Operation(
+            method = "PUT",
+            summary = "Changes a certificate",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Entity changed"),
+                    @ApiResponse(responseCode = "400", description = "Bad Request. ", content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    array = @ArraySchema(schema = @Schema(implementation = ErrorContainer.class)))
+                    }),
+                    @ApiResponse(responseCode = "500", description = "Unexpected Internal Server Error", content =
+                    @Content)
+            },
+            description = "This method changes a certificate"
+    )
     @PutMapping(MAPPING_ID)
     public ResponseEntity<GiftCertificateResponse> update(@PathVariable(name = ID) Long id,
                                               @RequestBody @Valid GiftCertificateRequest request,
