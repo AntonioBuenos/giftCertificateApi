@@ -81,7 +81,7 @@ public class GiftCertificateController {
             summary = "Finding a certificate by ID",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Successful Request"),
-                    @ApiResponse(responseCode = "400", description = "Bad Request. " ,
+                    @ApiResponse(responseCode = "400", description = "Bad Request. ",
                             content = {
                                     @Content(
                                             mediaType = "application/json",
@@ -117,7 +117,7 @@ public class GiftCertificateController {
     )
     @PostMapping
     public ResponseEntity<GiftCertificateResponse> create(@RequestBody @Valid GiftCertificateRequest request,
-                                              BindingResult bindingResult) {
+                                                          BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
             throw new BadRequestException(ValidationErrorConverter.getErrors(bindingResult).toString());
@@ -146,8 +146,8 @@ public class GiftCertificateController {
     )
     @PutMapping(MAPPING_ID)
     public ResponseEntity<GiftCertificateResponse> update(@PathVariable(name = ID) Long id,
-                                              @RequestBody @Valid GiftCertificateRequest request,
-                                              BindingResult bindingResult) {
+                                                          @RequestBody @Valid GiftCertificateRequest request,
+                                                          BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
             throw new BadRequestException(ValidationErrorConverter.getErrors(bindingResult).toString());
@@ -160,4 +160,10 @@ public class GiftCertificateController {
     }
 
     @DeleteMapping(MAPPING_ID)
-    public ResponseEntity<Map<String, Long>> delete(@PathVariable(ID) long 
+    public ResponseEntity<Map<String, Long>> delete(@PathVariable(ID) long id) {
+
+        if (Objects.isNull(service.findById(id))) throw new NoSuchEntityException();
+        service.delete(id);
+        return new ResponseEntity<>(Map.of(DELETED, id), HttpStatus.OK);
+    }
+}
